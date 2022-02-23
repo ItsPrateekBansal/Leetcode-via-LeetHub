@@ -10,24 +10,43 @@
  * };
  */
 class Solution {
-    int deepest, answer;
 public:
-    void helper(TreeNode *root, int depth) {
-        if(!root) return ;
-        if(!root->left && !root->right && depth==deepest) {
-            answer += root->val;
-        } 
-        if(!root->left && !root->right && depth > deepest) {
-            answer = root->val;
-            deepest = depth;
-        }
-        helper(root->left, depth+1);
-        helper(root->right, depth+1);
+    int height(TreeNode *root)
+    {
+        if(!root)
+            return 0;
+        return 1+max(height(root->left),height(root->right));
     }
-    int deepestLeavesSum(TreeNode* root) {
-        deepest = 0;
-        answer = 0;
-        helper(root, 0);
-        return answer;
+    int deepestLeavesSum(TreeNode* root) 
+    {
+        int h=height(root);
+        queue<TreeNode *> q;
+        q.push(root);
+        int sum=0;
+        int count=0;
+        while(true)
+        {
+            int size=q.size();
+            count++;
+            if(count==h)
+            {
+                while(!q.empty())
+                {
+                    sum+=q.front()->val;
+                    q.pop();   
+                }
+                return sum;
+            }
+            for(int i=0;i<size;i++)
+            {
+                TreeNode *temp=q.front();
+                q.pop();
+                if(temp->left)
+                    q.push(temp->left);
+                if(temp->right)
+                    q.push(temp->right);
+            }
+        }
+        return 0;
     }
 };
