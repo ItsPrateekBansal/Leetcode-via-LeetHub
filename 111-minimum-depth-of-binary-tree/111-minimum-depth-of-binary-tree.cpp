@@ -19,7 +19,9 @@ public:
             return ;
         }
         if(curr >= depth) return;
+        if(root->left)
         helper(root->left, depth, curr+1);
+        if(root->right)
         helper(root->right, depth, curr+1);
     }
     int minDepth(TreeNode* root) {
